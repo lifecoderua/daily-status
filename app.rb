@@ -5,11 +5,18 @@ get '/' do
   # Welcome aboard!"
 end
 
-post '/*' do
+
+# Handle `/daily *` slack command
+#
+# Payload:
+# params['token'] - OAuth token
+# params['team_id'] + params['user_id'] - to keep track on user
+# params['text'] - payload, parse for extra options
+post '/daily' do
   reply = {
-    text: "Catch on #{request.path}",
+    text: "Status stored!",
     attachments: [
-      { text: params.to_s }
+      { text: params['text'].to_s }
     ]
   }
 
