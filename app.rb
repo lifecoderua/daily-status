@@ -9,7 +9,7 @@ post '/*' do
   reply = {
     text: "Catch on #{request.path}",
     attachments: [
-      { text: request.body }
+      { text: params.to_s }
     ]
   }
 
