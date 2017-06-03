@@ -25,8 +25,9 @@ end
 
 # TEST: try Event-driven bot
 post '/slack/event' do
+  payload = JSON.parse(request.body.read).symbolize_keys
   reply = {
-    challenge: params['challenge']
+    challenge: payload[:challenge]
   }
 
   json reply
