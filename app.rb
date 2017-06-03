@@ -12,12 +12,21 @@ end
 # params['token'] - OAuth token
 # params['team_id'] + params['user_id'] - to keep track on user
 # params['text'] - payload, parse for extra options
-post '/daily' do
+post '/slack/daily' do
   reply = {
     text: "Status stored!",
     attachments: [
       { text: params['text'].to_s }
     ]
+  }
+
+  json reply
+end
+
+# TEST: try Event-driven bot
+post '/slack/event' do
+  reply = {
+    challenge: params['challenge']
   }
 
   json reply
