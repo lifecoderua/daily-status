@@ -25,10 +25,37 @@ end
 
 # TEST: try Event-driven bot
 post '/slack/event' do
-  payload = JSON.parse(request.body.read).symbolize_keys
-  reply = {
-    challenge: payload[:challenge]
-  }
+  bot = Bot.new(request.body)
 
-  json reply
+  # payload = JSON.parse(request.body.read).symbolize_keys
+  # reply = {
+  #   challenge: payload[:challenge]
+  # }
+
+  json bot.reply
+end
+
+class Bot
+  def initialize(body)
+    @event = JSON.parse(body.read).symbolize_keys
+  end
+
+  def reply
+    self.send @event[:type]
+  end
+
+  def url_verification
+    { challenge: @event[:challenge] }
+  end
+
+  def event_callback
+    p @event.inspect
+    { ok: 'ok' }
+  end
+
+  def method_missing
+    p '### !MISSING!'
+    p @event.inspect
+    { ok: 'ok' }
+  end
 end
