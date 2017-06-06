@@ -1,4 +1,4 @@
-require "sinatra/json"
+# require "sinatra/json"
 
 get '/' do
   "# Daily Status Slack bot backend online<br>
@@ -20,42 +20,33 @@ post '/slack/daily' do
     ]
   }
 
+  reply = {data: Command.new(params).result}
+
   json reply
 end
 
-# TEST: try Event-driven bot
-post '/slack/event' do
-  bot = Bot.new(request.body)
+class Command
+  attr_reader :action
 
-  # payload = JSON.parse(request.body.read).symbolize_keys
-  # reply = {
-  #   challenge: payload[:challenge]
-  # }
+  #TODO: better naming, maybe @ for personal information setup
+  ACTIONS = %w(name email report send)
 
-  json bot.reply
+  def initialize params
+    @params = params.symbolize_keys
+    action, @data = /^(\!(\w+) )?(.*)/m.match(@params[:text])[2..3]
+    @action = ACTIONS.include?(action) ? action.to_sym : :status
+  end
+
+  def result
+    case @action
+      when :status 
+        "STATUS! #{@data}"
+      when :name
+        "@name set to #{@data}"
+      when :email 
+        "@email set to #{@data}"
+    end
+  end
+
 end
 
-class Bot
-  def initialize(body)
-    @event = JSON.parse(body.read).symbolize_keys
-  end
-
-  def reply
-    self.send @event[:type]
-  end
-
-  def url_verification
-    { challenge: @event[:challenge] }
-  end
-
-  def event_callback
-    p @event.inspect
-    { ok: 'ok' }
-  end
-
-  def method_missing
-    p '### !MISSING!'
-    p @event.inspect
-    { ok: 'ok' }
-  end
-end
