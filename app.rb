@@ -1,8 +1,23 @@
-# require "sinatra/json"
+configure do
+  
+  # db = Mongo::Client.new(ENV['db_connection'])  
+  # set :mongo_db, db[:test]
+end
 
 get '/' do
   "# Daily Status Slack bot backend online<br>
   # Welcome aboard!"
+
+  p Figaro.env.map { |k,v| p "#{k}=>#{v}" } #inspect
+  p ENV['db_connection']
+  p ENV['DBC']  
+return
+
+  p settings.mongo_db.database.collection_names.inspect
+  settings.mongo_db.insert_one({ user: 'TestUser', name: 'NewName' })
+  settings.mongo_db.find(:_id => id).
+    find_one_and_update('$set' => request.params)
+  p document = settings.mongo_db.find().to_a.first
 end
 
 
