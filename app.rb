@@ -21,8 +21,8 @@ get '/' do
 
   u = User.get params[:user_id]
   s = Status.report
-  u.update params
-  u.save
+  # u.update params
+  # u.save
 
   # json User.find()
   json({ 

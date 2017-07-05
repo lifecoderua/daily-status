@@ -7,7 +7,7 @@ class Command
   def initialize params
     @params = params.symbolize_keys
     @action, @data = /^(\!(@?\w+) )?(.*)/m.match(@params[:text])[2..3]
-    @user = User.get(@params[:user_id])
+    @user = User.get(@params[:user_id], params[:user_name])
   end
 
   def result

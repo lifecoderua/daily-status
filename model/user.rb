@@ -7,7 +7,8 @@ class User
   field :name
   field :email
   
-  def self.get user_id
-    self.find_or_create_by user_id: user_id
+  def self.get user_id, user_name=''
+    return nil unless user_id
+    self.where(user_id: user_id).find_or_create_by name: user_name
   end
 end
