@@ -1,0 +1,11 @@
+default: &DEFAULT
+  clients:
+    default:
+      uri: <%= ENV['db_connection'] %>
+
+
+development:
+  <<: *DEFAULT
+
+production:
+  <<: *DEFAULT  

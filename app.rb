@@ -1,21 +1,35 @@
+# TODO: status template
+# TODO: extract app parts, bring structure
+# TODO: section defaults, partial updates
+# TODO: weekly status reminder
+# TODO: show last 3 work days to-review aggregation (excluding own)
+# TODO: status mailer
+# TODO: indicate user missing status
+# TODO: ping-notify users about submission required
+
+require_all './model/'
+
+
 configure do
   Dotenv.load
-  db = Mongo::Client.new(ENV['db_connection'])  
-  set :mongo_db, db[:test]
+  Mongoid.load!('./config/mongoid.yml.erb') 
 end
 
 get '/' do
   "# Daily Status Slack bot backend online<br>
   # Welcome aboard!"
 
-  p settings.mongo_db.database.collection_names.inspect
-  settings.mongo_db.insert_one({ user: 'TestUser', name: 'NewName' })
-  settings.mongo_db.find({}).
-    find_one_and_update('$set' => {
-      user: '1234', name: 'waka-waka'
-    })
-    # find_one_and_update('$set' => request.params)
-  json document = settings.mongo_db.find().to_a.first
+  u = User.get params[:user_id]
+  s = Status.report
+  u.update params
+  u.save
+
+  # json User.find()
+  json({ 
+    users: User.all,
+    statusAll: Status.all,
+    statusReport: s
+  })
 end
 
 
@@ -38,28 +52,5 @@ post '/slack/daily' do
   json reply
 end
 
-class Command
-  attr_reader :action
 
-  #TODO: better naming, maybe @ for personal information setup
-  ACTIONS = %w(name email report send)
-
-  def initialize params
-    @params = params.symbolize_keys
-    action, @data = /^(\!(\w+) )?(.*)/m.match(@params[:text])[2..3]
-    @action = ACTIONS.include?(action) ? action.to_sym : :status
-  end
-
-  def result
-    case @action
-      when :status 
-        "STATUS! #{@data}"
-      when :name
-        "@name set to #{@data}"
-      when :email 
-        "@email set to #{@data}"
-    end
-  end
-
-end
 
