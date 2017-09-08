@@ -20,8 +20,11 @@ post '/slack/daily' do
     ]
   }
 
-  reply = {data: Command.new(params).result}
+  p params.inspect
+  # reply = {data: Command.new(params).result}
 
+  # "type": "url_verification"
+  reply = { challenge: params['challenge'] }
   json reply
 end
 
