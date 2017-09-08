@@ -7,6 +7,9 @@
 # TODO: indicate user missing status
 # TODO: ping-notify users about submission required
 
+# Iteration 2
+# TODO: event subscriptions
+
 if (ENV['RACK_ENV'] == 'development')
   require('dotenv/load')
 end
@@ -67,6 +70,7 @@ post '/slack/daily' do
   request.body.rewind
   request_payload = JSON.parse request.body.read
 
+  p request_payload.inspect
   reply = { challenge: request_payload['challenge'] }
 
   json reply
