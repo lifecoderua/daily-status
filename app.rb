@@ -1,10 +1,26 @@
-# require "sinatra/json"
+if (ENV['RACK_ENV'] == 'development')
+  require('dotenv/load')
+end
+require 'net/http'
 
 get '/' do
   "# Daily Status Slack bot backend online<br>
   # Welcome aboard!"
 end
 
+
+get '/poster' do
+  token = ENV['BOT_TOKEN']
+  
+  return p token
+  ## Sample Message.Post
+  # uri = URI.parse('https://slack.com/api/chat.postMessage')
+  # json Net::HTTP.post_form(uri, {
+  #   token: token,
+  #   channel: 'updates',
+  #   text: '2 woof!'
+  # })
+end
 
 # Handle `/daily *` slack command
 #

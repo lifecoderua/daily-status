@@ -6,5 +6,6 @@ gem 'sinatra'
 gem 'sinatra-contrib'
 
 group :development do
+  gem 'dotenv'
   gem 'shotgun'
 end
