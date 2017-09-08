@@ -20,11 +20,11 @@ post '/slack/daily' do
     ]
   }
 
-  p params.inspect
-  # reply = {data: Command.new(params).result}
+  request.body.rewind
+  request_payload = JSON.parse request.body.read
 
-  # "type": "url_verification"
-  reply = { challenge: params['challenge'] }
+  reply = { challenge: request_payload['challenge'] }
+  
   json reply
 end
 
