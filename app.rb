@@ -53,13 +53,10 @@ get '/poster' do
   token = ENV['BOT_TOKEN']
 
   return p token
+
   ## Sample Message.Post
-  # uri = URI.parse('https://slack.com/api/chat.postMessage')
-  # json Net::HTTP.post_form(uri, {
-  #   token: token,
-  #   channel: 'updates',
-  #   text: '2 woof!'
-  # })
+  # token = Slack.new().post('updates', 'I am robot!')
+
 end
 
 # Handle `/daily *` slack command
