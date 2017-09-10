@@ -23,19 +23,28 @@ end
 
 
 get '/' do
-  "# Daily Status Slack bot backend online<br>
-  # Welcome aboard!"
+  '# Daily Status Slack bot backend online<br>
+  # Welcome aboard!'
 
-  u = User.get params[:user_id]
-  s = Status.report
-  # u.update params
-  # u.save
+  # u = User.get params[:user_id]
+  # s = Status.report
+  # # u.update params
+  # # u.save
 
   # json User.find()
   json({
-    users: User.all,
-    statusAll: Status.all,
-    statusReport: s
+    questions: [
+        Question.next(-1),
+        Question.next(0),
+        Question.next(1),
+        Question.next(2),
+        Question.next(3),
+        Question.next(4),
+        Question.next(5),
+    ]
+    # users: User.all,
+    # statusAll: Status.all,
+    # statusReport: s
   })
 end
 
@@ -60,12 +69,12 @@ end
 # params['team_id'] + params['user_id'] - to keep track on user
 # params['text'] - payload, parse for extra options
 post '/slack/daily' do
-  reply = {
-    text: "Status stored!",
-    attachments: [
-      { text: params['text'].to_s }
-    ]
-  }
+  # reply = {
+  #   text: "Status stored!",
+  #   attachments: [
+  #     { text: params['text'].to_s }
+  #   ]
+  # }
 
   request.body.rewind
   request_payload = JSON.parse request.body.read
