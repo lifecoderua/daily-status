@@ -10,7 +10,7 @@
 # Iteration 2
 # TODO: event subscriptions
 
-if (ENV['RACK_ENV'] == 'development')
+if ENV['RACK_ENV'] == 'development'
   require('dotenv/load')
 end
 
@@ -65,6 +65,10 @@ get '/asker' do
   p Status.get('AB34fOO') #.next_question
 end
 
+get '/slacker' do
+  json Slack.new.room_members('G71FJA4Q7')
+end
+
 
 # TODO: debug method, to cleanup
 get '/talker' do
@@ -90,21 +94,9 @@ end
 # params['team_id'] + params['user_id'] - to keep track on user
 # params['text'] - payload, parse for extra options
 post '/slack/daily' do
-  # reply = {
-  #   text: "Status stored!",
-  #   attachments: [
-  #     { text: params['text'].to_s }
-  #   ]
-  # }
-
   request.body.rewind
-  request_payload = JSON.parse request.body.read
+  payload = JSON.parse(request.body.read)
 
-  p request_payload.inspect
-  reply = { challenge: request_payload['challenge'] }
-
-  json reply
+  json Talker.groom(payload)
 end
-
-
 

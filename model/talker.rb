@@ -22,4 +22,17 @@ class Talker
       [question, @status.answers[i]]
     end
   end
+
+  def self.groom(payload)
+    p payload.inspect
+    return {} if 'bot_message' === payload['subtype']
+    return { challenge: payload['challenge'] } if payload['challenge']
+
+    return {
+        text: "Yay, I'm answer!",
+        attachments: [
+            { text: payload['text'] }
+        ]
+    }
+  end
 end

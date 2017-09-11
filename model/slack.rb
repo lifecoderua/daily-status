@@ -14,6 +14,14 @@ class Slack
     }
   end
 
+  def room_members(channel)
+    endpoint = 'G' === channel[0] ? 'groups.info' : 'channels.info'
+
+    run(endpoint, {
+        channel: channel
+    })['group']['members']
+  end
+
 private
 
   def run(endpoint, payload)
@@ -21,6 +29,7 @@ private
     payload[:token] = @token
     endpoint = URI.parse(API_URL + endpoint)
 
-    Net::HTTP.post_form(endpoint, payload)
+    # TODO: check codes, test for {ok: true}
+    JSON.parse Net::HTTP.post_form(endpoint, payload).body
   end
 end
