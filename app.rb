@@ -49,6 +49,7 @@ get '/' do
 end
 
 
+# TODO: debug method, to cleanup
 get '/poster' do
   token = ENV['BOT_TOKEN']
 
@@ -56,7 +57,30 @@ get '/poster' do
 
   ## Sample Message.Post
   # token = Slack.new().post('updates', 'I am robot!')
+end
 
+# TODO: debug method, to cleanup
+get '/asker' do
+  # p Status.new('AB34fOO').next_question
+  p Status.get('AB34fOO') #.next_question
+end
+
+
+# TODO: debug method, to cleanup
+get '/talker' do
+  uid = 'AS32445DJ'
+  talker = Talker.new uid
+
+  p '::>>' + talker.next_question.inspect
+  talker.store_answer('one')
+  p '::>>' + talker.next_question.inspect
+  talker.store_answer('two')
+  p '::>>' + talker.next_question.inspect
+  talker.store_answer('three')
+
+  p '::>>' + talker.report.inspect
+
+  'yay!'
 end
 
 # Handle `/daily *` slack command

@@ -7,6 +7,10 @@ class Question
     self.get question_order + 1
   end
 
+  def self.all
+    QUESTIONS
+  end
+
 private
   QUESTIONS = [
       'What have you completed today?',
