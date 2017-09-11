@@ -7,10 +7,12 @@ class Slack
     @token = ENV['BOT_TOKEN']
   end
 
-  def post(channel, text)
+  def post(channel, text, attachments=[])
     run 'chat.postMessage', {
-      channel: channel, #'updates',
-      text: text #'2 woof!'
+      channel: channel, # 'updates' || 'C492503HT' || 'U.....'
+      text: text,
+      attachments: attachments,
+      as_user: true,
     }
   end
 

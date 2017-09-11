@@ -25,14 +25,15 @@ class Talker
 
   def self.groom(payload)
     p payload.inspect
-    return {} if 'bot_message' === payload['subtype']
     return { challenge: payload['challenge'] } if payload['challenge']
+    return {} if 'bot_message' === payload['event']['subtype'] rescue
 
-    return {
-        text: "Yay, I'm answer!",
-        attachments: [
-            { text: payload['text'] }
+    Slack.new.post('U69C2NL7N',
+        "Yay, I'm answer!",
+        [
+            { text: payload['text'] },
+            { text: 'some payload text'}
         ]
-    }
+    )
   end
 end
